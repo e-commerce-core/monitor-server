@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const Router = require('koa-router');
 const collectBiz = require('../bizs/collectBiz');
 
@@ -5,15 +7,16 @@ const router = new Router({
   prefix: '/collect'
 });
 
-router.get('/', async ctx => {
-  // 处理数据
-  console.log(ctx.request.body);
-  ctx.body = 'ok';
+const wmGif = fs.readFileSync(path.join(__dirname, '../assets/images/wm.gif'));
+
+router.get('/wm.gif', async ctx => {
+  collectBiz.processPagePerformance(ctx, 'get');
+  ctx.type = 'image/gif';
+  ctx.body = wmGif;
 });
 
 router.post('/', async ctx => {
-  // 处理数据
-  console.log(ctx.request.body);
+  collectBiz.processPagePerformance(ctx);
   ctx.body = 'ok';
 });
 
